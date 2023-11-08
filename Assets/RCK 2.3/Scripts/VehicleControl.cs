@@ -14,7 +14,7 @@ public class VehicleControl : MonoBehaviour
 
     public bool activeControl = false;
 
-
+    private AgentCar car;
     // Wheels Setting /////////////////////////////////
 
     public CarWheels carWheels;
@@ -272,7 +272,7 @@ public class VehicleControl : MonoBehaviour
 
     void Awake()
     {
-
+        car = GetComponent<AgentCar>();
         if (carSetting.automaticGear) NeutralGear = false;
 
         myRigidbody = transform.GetComponent<Rigidbody>();
@@ -504,8 +504,8 @@ public class VehicleControl : MonoBehaviour
 
                 if (carWheels.wheels.frontWheelDrive || carWheels.wheels.backWheelDrive)
                 {
-                    steer = Mathf.MoveTowards(steer, Input.GetAxis("Horizontal"), 0.2f);
-                    accel = Input.GetAxis("Vertical");
+                    steer = car.Steer;
+                    accel = car.Accel;
                     brake = Input.GetButton("Jump");
                     shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
 
