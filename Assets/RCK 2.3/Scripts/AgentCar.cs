@@ -24,22 +24,37 @@ public class AgentCar : Agent
 
     public void TrackerCorrectCheck(object sender, EventArgs e)
     {
+        Debug.Log("CorrectCheckpoint = 1");
         AddReward(1);
+       
     }
 
     public void TrackerIncorrectCheck(object sender, EventArgs e)
     {
+        Debug.Log("IncorrectCheck = -1");
         AddReward(-1);
+
+        EndEpisode();
     }
 
     public override void OnEpisodeBegin()
     {
+        Debug.Log("Comenzando!!!");
         transform.position = spawnPos.position;
+        transform.rotation = spawnPos.rotation;
+
+        trackerPoint.RestartCheckPoint();
+
     }
+
+    
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        Vector3 nextCheckPoint = trackerPoint.GetNextCheck().transform.forward;
+        float directionDot = Vector3.Dot(transform.forward, nextCheckPoint);
 
+        sensor.AddObservation(directionDot);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -74,12 +89,13 @@ public class AgentCar : Agent
     {
         if(other.CompareTag("Wall"))
         {
+            Debug.Log("Wall = -1");
             AddReward(-1);
+
+            EndEpisode();
+            
         }
-        else if(other.CompareTag("Checkpoints"))
-        {
-            AddReward(1);
-        }
+ 
     }
 
 

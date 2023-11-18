@@ -30,15 +30,20 @@ public class TrackerPoint : MonoBehaviour
     {
         if (checkPointsList.IndexOf(checkPoint) == nextCheckPoint)
         {
-            Debug.Log("Correct");
+            //Debug.Log("Correct");
             nextCheckPoint = (nextCheckPoint + 1) % checkPointsList.Count;
             OnCorrectCheck?.Invoke(this, EventArgs.Empty);
         }
         else
         {
-            Debug.Log("Incorrect");
+            //Debug.Log("Incorrect");
             OnIncorrectCheck?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void RestartCheckPoint()
+    {
+        nextCheckPoint = 0;
     }
 
     public CheckPoint GetNextCheck()
