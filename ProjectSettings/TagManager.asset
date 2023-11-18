@@ -7,6 +7,7 @@ TagManager:
   - Grass
   - Wall
   - Checkpoints
+  - Street
   layers:
   - Default
   - TransparentFX

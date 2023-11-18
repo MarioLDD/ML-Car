@@ -4,8 +4,13 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using System;
+
 public class AgentCar : Agent
 {
+    [SerializeField] TrackerPoint trackerPoint;
+    [SerializeField] Transform spawnPos;
+
     private float steer;
     private float accel;
 
@@ -13,8 +18,30 @@ public class AgentCar : Agent
     public float Accel { get => accel; }
     void Start()
     {
+        trackerPoint.OnCorrectCheck += TrackerCorrectCheck;
+        trackerPoint.OnIncorrectCheck += TrackerIncorrectCheck;
+    }
+
+    public void TrackerCorrectCheck(object sender, EventArgs e)
+    {
+        AddReward(1);
+    }
+
+    public void TrackerIncorrectCheck(object sender, EventArgs e)
+    {
+        AddReward(-1);
+    }
+
+    public override void OnEpisodeBegin()
+    {
+        transform.position = spawnPos.position;
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
 
     }
+
     public override void OnActionReceived(ActionBuffers actions)
     {
         switch (actions.DiscreteActions[0])
@@ -41,12 +68,6 @@ public class AgentCar : Agent
                 steer = Mathf.MoveTowards(steer, -1, 0.2f);
                 break;
         }
-    }
-
-    public override void CollectObservations(VectorSensor sensor)
-    {
-
-
     }
 
     private void OnTriggerEnter(Collider other)
