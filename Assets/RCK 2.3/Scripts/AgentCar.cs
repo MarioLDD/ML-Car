@@ -45,6 +45,8 @@ public class AgentCar : Agent
 
         trackerPoint.RestartCheckPoint();
 
+        Contador.Instance.AddSteps();
+
     }
 
     
