@@ -5749,7 +5749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carTransformList:
-  - {fileID: 0}
+  - {fileID: 1233532697}
   checkPointsList: []
   nextCheckPointList: 
 --- !u!1001 &831441178
@@ -6950,6 +6950,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1548527874559870699, guid: f47ea03a4be205b4b83f51c81b7283b9, type: 3}
+      propertyPath: spawnPos
+      value: 
+      objectReference: {fileID: 1602840788}
+    - target: {fileID: 1548527874559870699, guid: f47ea03a4be205b4b83f51c81b7283b9, type: 3}
+      propertyPath: trackerPoint
+      value: 
+      objectReference: {fileID: 830810503}
     - target: {fileID: 2908584405214675244, guid: f47ea03a4be205b4b83f51c81b7283b9, type: 3}
       propertyPath: m_Name
       value: OldCar
@@ -7684,6 +7692,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5127833778291424795, guid: 6573618b5119dc843a0fa49189b2f1dd, type: 3}
   m_PrefabInstance: {fileID: 1202533505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1233532697 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 107157344489237605, guid: f47ea03a4be205b4b83f51c81b7283b9, type: 3}
+  m_PrefabInstance: {fileID: 1068215014}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1238814855
 PrefabInstance:
@@ -9773,13 +9786,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1602840787}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071078}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000009834766}
   m_LocalPosition: {x: 4.87, y: 0.19999999, z: 71.279}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &1606465114
 PrefabInstance:
   m_ObjectHideFlags: 0
