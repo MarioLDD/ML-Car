@@ -25,7 +25,7 @@ public class AgentCar : Agent
         Rigidbody rb = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         
         if (rb != null)
@@ -39,7 +39,7 @@ public class AgentCar : Agent
             }
         }
 
-    }
+    }*/
 
     public void TrackerCorrectCheck(object sender, EventArgs e)
     {
