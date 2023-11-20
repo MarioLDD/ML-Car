@@ -42,13 +42,13 @@ public class TrackerPoint : MonoBehaviour
             //TransformEventArgs transformEvent = new TransformEventArgs();
             //transformEvent.transformCar = carTransform;
             //OnCorrectCheck?.Invoke(this, EventArgs.Equals());
-            carTransform.GetComponent<AgentCar>().TrackerCorrectCheck();
+            carTransform.GetComponent<AgentCarContinuous>().TrackerCorrectCheck();
         }
         else
         {
             //Debug.Log("Incorrect");
             //OnIncorrectCheck?.Invoke(this, EventArgs.Empty);
-            carTransform.GetComponent<AgentCar>().TrackerIncorrectCheck();
+            carTransform.GetComponent<AgentCarContinuous>().TrackerIncorrectCheck();
         }
     }
 

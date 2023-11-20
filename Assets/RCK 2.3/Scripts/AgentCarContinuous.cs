@@ -19,11 +19,11 @@ public class AgentCarContinuous : Agent, IAgentCar
     public float Accel { get => accel; }
     void Start()
     {
-        trackerPoint.OnCorrectCheck += TrackerCorrectCheck;
-        trackerPoint.OnIncorrectCheck += TrackerIncorrectCheck;
+        //trackerPoint.OnCorrectCheck += TrackerCorrectCheck;
+        //trackerPoint.OnIncorrectCheck += TrackerIncorrectCheck;
 
         Rigidbody rb = GetComponent<Rigidbody>();
-        StartCoroutine(VelocityRewards());
+        //StartCoroutine(VelocityRewards());
 
     }
 
@@ -43,14 +43,14 @@ public class AgentCarContinuous : Agent, IAgentCar
 
     //}
 
-    public void TrackerCorrectCheck(object sender, EventArgs e)
+    public void TrackerCorrectCheck()
     {
         Debug.Log("CorrectCheckpoint = 1");
         AddReward(1f);
 
     }
 
-    public void TrackerIncorrectCheck(object sender, EventArgs e)
+    public void TrackerIncorrectCheck()
     {
         Debug.Log("IncorrectCheck = -1");
         AddReward(-1);
@@ -64,7 +64,7 @@ public class AgentCarContinuous : Agent, IAgentCar
         transform.position = spawnPos.position;
         transform.rotation = spawnPos.rotation;
 
-        trackerPoint.RestartCheckPoint();
+        trackerPoint.RestartCheckPoint(this.transform);
 
         Contador.Instance.AddSteps();
 
@@ -74,9 +74,10 @@ public class AgentCarContinuous : Agent, IAgentCar
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 nextCheckPoint = trackerPoint.GetNextCheck().transform.forward;
+        Vector3 nextCheckPoint = trackerPoint.GetNextCheck(this.transform).transform.forward;
         float directionDot = Vector3.Dot(transform.forward, nextCheckPoint);
-
+        sensor.AddObservation(trackerPoint.GetNextCheck(this.transform).transform.position);
+        sensor.AddObservation(trackerPoint.GetNextCheck(this.transform).transform.position - this.transform.position);
         sensor.AddObservation(directionDot);
         sensor.AddObservation(transform.position);
         sensor.AddObservation(rb.velocity);
@@ -88,40 +89,23 @@ public class AgentCarContinuous : Agent, IAgentCar
 
         accel = actions.ContinuousActions[0];
         steer = actions.ContinuousActions[1];
-
-
-
-        //switch (actions.DiscreteActions[0])
-        //{
-        //    case 0:
-        //        accel = 0;
-        //        break;
-        //    case 1:
-        //        accel = 1;
-        //        break;
-        //    case 2:
-        //        accel = -1;
-        //        break;
-        //}
-        //switch (actions.DiscreteActions[1])
-        //{
-        //    case 0:
-        //        steer = Mathf.MoveTowards(steer, 0, 0.2f) ;
-        //        break;
-        //    case 1:
-        //        steer = Mathf.MoveTowards(steer, 1, 0.2f);
-        //        break;
-        //    case 2:
-        //        steer = Mathf.MoveTowards(steer, -1, 0.2f);
-        //        break;
-        //}
     }
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float floatVertical = Input.GetAxis("Vertical");
+        ActionSegment<float> continuousActionsOut = actionsOut.ContinuousActions;
+
+
+        continuousActionsOut[1] = moveHorizontal;
+        continuousActionsOut[0] = floatVertical;
+    }
+
     private IEnumerator VelocityRewards()
     {
         while (true)
         {
             yield return new WaitForSeconds(1);
-            Debug.Log(rb.velocity.z);
 
             if (rb.velocity.z > 0.5f)
             {
@@ -136,7 +120,7 @@ public class AgentCarContinuous : Agent, IAgentCar
         if (other.CompareTag("Wall"))
         {
             Debug.Log("Wall = -1");
-            AddReward(-1);
+            AddReward(-10);
 
             EndEpisode();
 

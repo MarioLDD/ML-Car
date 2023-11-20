@@ -11461,6 +11461,7 @@ GameObject:
   - component: {fileID: 2592727373780225956}
   - component: {fileID: 6552975926240336592}
   - component: {fileID: 3556991149164886848}
+  - component: {fileID: 1382351207576406821}
   m_Layer: 8
   m_Name: NewCar
   m_TagString: Untagged
@@ -11618,8 +11619,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 4
-    NumStackedVectorObservations: 1
+    VectorObservationSize: 13
+    NumStackedVectorObservations: 5
     m_ActionSpec:
       m_NumContinuousActions: 2
       BranchSizes: 
@@ -11664,15 +11665,14 @@ MonoBehaviour:
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
   - Wall
-  - Checkpoints
-  m_RaysPerDirection: 5
-  m_MaxRayDegrees: 70
+  m_RaysPerDirection: 7
+  m_MaxRayDegrees: 45
   m_SphereCastRadius: 0.5
-  m_RayLength: 20
+  m_RayLength: 100
   m_RayLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967240
-  m_ObservationStacks: 1
+    m_Bits: 4294966920
+  m_ObservationStacks: 5
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0
@@ -11724,6 +11724,22 @@ MonoBehaviour:
   optionalMeshList:
   - {fileID: 1193900843565253108}
   crashSound: {fileID: 4792492747204770869}
+--- !u!114 &1382351207576406821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6711863212556404531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 0
+  NumStepsToRecord: 0
+  DemonstrationName: DrivingMario
+  DemonstrationDirectory: Demo
 --- !u!1 &6831386949342042669
 GameObject:
   m_ObjectHideFlags: 0

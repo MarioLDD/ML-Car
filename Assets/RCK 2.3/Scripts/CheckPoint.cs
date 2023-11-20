@@ -8,7 +8,7 @@ public class CheckPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.parent.TryGetComponent<AgentCar>(out AgentCar agentCar))
+        if (other.transform.parent.parent.TryGetComponent<AgentCarContinuous>(out AgentCarContinuous agentCar))
         {
             //Debug.Log(other.transform.parent.parent.name);
             trackerPoint.CarThrough(this, other.transform.parent.parent);
