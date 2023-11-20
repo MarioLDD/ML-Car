@@ -7,8 +7,10 @@ public class TrackerPoint : MonoBehaviour
 {
     public event EventHandler OnCorrectCheck;
     public event EventHandler OnIncorrectCheck;
+
+    public List<Transform> carTransformList;
     public List<CheckPoint> checkPointsList;
-    private int nextCheckPoint;
+    public List<int> nextCheckPointList;
 
     private void Awake()
     {
@@ -23,31 +25,45 @@ public class TrackerPoint : MonoBehaviour
             checkPointsList.Add(checkPointSingle);
         }
 
-        nextCheckPoint = 0;
+        nextCheckPointList = new List<int>();
+        foreach (Transform carTransfor in carTransformList)
+        {
+            nextCheckPointList.Add(0);
+        }
     }
 
-    public void CarThrough(CheckPoint checkPoint)
+    public void CarThrough(CheckPoint checkPoint, Transform carTransform)
     {
+        int nextCheckPoint = nextCheckPointList[carTransformList.IndexOf(carTransform)];
         if (checkPointsList.IndexOf(checkPoint) == nextCheckPoint)
         {
             //Debug.Log("Correct");
-            nextCheckPoint = (nextCheckPoint + 1) % checkPointsList.Count;
-            OnCorrectCheck?.Invoke(this, EventArgs.Empty);
+            nextCheckPointList[carTransformList.IndexOf(carTransform)] = (nextCheckPoint + 1) % checkPointsList.Count;
+            //TransformEventArgs transformEvent = new TransformEventArgs();
+            //transformEvent.transformCar = carTransform;
+            //OnCorrectCheck?.Invoke(this, EventArgs.Equals());
+            carTransform.GetComponent<AgentCar>().TrackerCorrectCheck();
         }
         else
         {
             //Debug.Log("Incorrect");
-            OnIncorrectCheck?.Invoke(this, EventArgs.Empty);
+            //OnIncorrectCheck?.Invoke(this, EventArgs.Empty);
+            carTransform.GetComponent<AgentCar>().TrackerIncorrectCheck();
         }
     }
 
-    public void RestartCheckPoint()
+    public void RestartCheckPoint(Transform carTransform)
     {
-        nextCheckPoint = 0;
+        nextCheckPointList[carTransformList.IndexOf(carTransform)] = 0;
     }
 
-    public CheckPoint GetNextCheck()
+    public CheckPoint GetNextCheck(Transform carTransform)
     {
-        return checkPointsList[nextCheckPoint];
+        return checkPointsList[nextCheckPointList[carTransformList.IndexOf(carTransform)]];
     }
+}
+
+public class TransformEventArgs : EventArgs
+{
+    public Transform transformCar { get; set; }
 }
