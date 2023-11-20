@@ -17,6 +17,8 @@ public class AgentCar : Agent
 
     public float Steer { get => steer; }
     public float Accel { get => accel; }
+
+    float nextPointDistance;
     void Start()
     {
         //trackerPoint.OnCorrectCheck += TrackerCorrectCheck;
@@ -25,26 +27,27 @@ public class AgentCar : Agent
         Rigidbody rb = GetComponent<Rigidbody>();
     }
 
-    //private void FixedUpdate()
-    //{
-        
-    //    if (rb != null)
-    //    {
-    //        if (rb.velocity.z < 0)
-    //        {
-    //            Debug.Log("Rb Velocity negativa!!");
-                
-    //            AddReward(-0.1f);
-
-    //        }
-    //    }
-
-    //}
+    private void FixedUpdate()
+    {
+        float distance = Vector3.Distance(transform.position, trackerPoint.GetNextCheck(this.transform).transform.position);
+        if (distance < nextPointDistance)
+        {
+            //Debug.Log(1/distance);
+            AddReward(1/distance);
+        }
+        else if (distance > nextPointDistance)
+        {
+            //Debug.Log("Mas disntancia");
+            AddReward(1/distance * -1f);
+        }
+        nextPointDistance = distance;
+    }
 
     public void TrackerCorrectCheck()
     {
         //Debug.Log(transformEvent.transformCar.name);
         Debug.Log("CorrectCheckpoint = 1");
+        nextPointDistance = Vector3.Distance(transform.position, trackerPoint.GetNextCheck(this.transform).transform.position);
         AddReward(1f);
     }
 
@@ -70,7 +73,7 @@ public class AgentCar : Agent
         transform.rotation = spawnPos.rotation;
 
         trackerPoint.RestartCheckPoint(this.transform);
-
+        accel = 0;
         Contador.Instance.AddSteps();
     }
 
@@ -79,8 +82,9 @@ public class AgentCar : Agent
         Vector3 nextCheckPoint = trackerPoint.GetNextCheck(this.transform).transform.forward;
         float directionDot = Vector3.Dot(transform.forward, nextCheckPoint);
         sensor.AddObservation(directionDot);
+        sensor.AddObservation(trackerPoint.GetNextCheck(this.transform).transform.position);
         sensor.AddObservation(transform.position);
-        //Debug.Log(nextCheckPoint);
+        //Debug.Log(trackerPoint.GetNextCheck(this.transform).transform.position);
         //Debug.Log(directionDot);
         var localVelocity = transform.InverseTransformDirection(rb.velocity);
         sensor.AddObservation(localVelocity.x);
@@ -120,12 +124,17 @@ public class AgentCar : Agent
     {
         if(other.CompareTag("Wall"))
         {
-            Debug.Log("Wall = -1");
-            AddReward(-1);
+            Debug.Log("Wall = -5");
+            AddReward(-5);
 
             EndEpisode();
         }
  
+    }
+
+    IEnumerator DistanceCarCheckPoint()
+    {
+        yield return new WaitForSeconds(1.0f);
     }
 
     //private void OnTriggerStay(Collider other)
