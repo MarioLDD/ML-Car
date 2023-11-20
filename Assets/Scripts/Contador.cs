@@ -25,7 +25,7 @@ public class Contador : MonoBehaviour
     public void AddSteps()
     {
         stepsAmount++;
-        stepCountText.text = $"Steps: {stepsAmount}";
+        stepCountText.text = $"Episodes: {stepsAmount}";
     }
 
 }
