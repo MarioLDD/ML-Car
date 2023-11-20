@@ -14,7 +14,7 @@ public class VehicleControl : MonoBehaviour
 
     public bool activeControl = false;
 
-    private AgentCar car;
+    private IAgentCar car;
     // Wheels Setting /////////////////////////////////
 
     public CarWheels carWheels;
@@ -272,7 +272,7 @@ public class VehicleControl : MonoBehaviour
 
     void Awake()
     {
-        car = GetComponent<AgentCar>();
+        car = GetComponent<IAgentCar>();
         if (carSetting.automaticGear) NeutralGear = false;
 
         myRigidbody = transform.GetComponent<Rigidbody>();

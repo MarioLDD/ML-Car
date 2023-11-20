@@ -5158,7 +5158,7 @@ MonoBehaviour:
     - {fileID: 484082}
     springs: 25000
     dampers: 1500
-    carPower: 500
+    carPower: 120
     shiftPower: 150
     brakePower: 12000
     shiftCentre: {x: 0, y: -0.05, z: 0}

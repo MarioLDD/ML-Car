@@ -6,7 +6,7 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System;
 
-public class AgentCar : Agent, IAgentCar
+public class AgentCarContinuous : Agent, IAgentCar
 {
     [SerializeField] TrackerPoint trackerPoint;
     [SerializeField] Transform spawnPos;
@@ -23,17 +23,19 @@ public class AgentCar : Agent, IAgentCar
         trackerPoint.OnIncorrectCheck += TrackerIncorrectCheck;
 
         Rigidbody rb = GetComponent<Rigidbody>();
+        StartCoroutine(VelocityRewards());
+
     }
 
     //private void FixedUpdate()
     //{
-        
+
     //    if (rb != null)
     //    {
     //        if (rb.velocity.z < 0)
     //        {
     //            Debug.Log("Rb Velocity negativa!!");
-                
+
     //            AddReward(-0.1f);
 
     //        }
@@ -45,7 +47,7 @@ public class AgentCar : Agent, IAgentCar
     {
         Debug.Log("CorrectCheckpoint = 1");
         AddReward(1f);
-       
+
     }
 
     public void TrackerIncorrectCheck(object sender, EventArgs e)
@@ -68,7 +70,7 @@ public class AgentCar : Agent, IAgentCar
 
     }
 
-    
+
 
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -76,47 +78,70 @@ public class AgentCar : Agent, IAgentCar
         float directionDot = Vector3.Dot(transform.forward, nextCheckPoint);
 
         sensor.AddObservation(directionDot);
+        sensor.AddObservation(transform.position);
+        sensor.AddObservation(rb.velocity);
+
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        switch (actions.DiscreteActions[0])
+
+        accel = actions.ContinuousActions[0];
+        steer = actions.ContinuousActions[1];
+
+
+
+        //switch (actions.DiscreteActions[0])
+        //{
+        //    case 0:
+        //        accel = 0;
+        //        break;
+        //    case 1:
+        //        accel = 1;
+        //        break;
+        //    case 2:
+        //        accel = -1;
+        //        break;
+        //}
+        //switch (actions.DiscreteActions[1])
+        //{
+        //    case 0:
+        //        steer = Mathf.MoveTowards(steer, 0, 0.2f) ;
+        //        break;
+        //    case 1:
+        //        steer = Mathf.MoveTowards(steer, 1, 0.2f);
+        //        break;
+        //    case 2:
+        //        steer = Mathf.MoveTowards(steer, -1, 0.2f);
+        //        break;
+        //}
+    }
+    private IEnumerator VelocityRewards()
+    {
+        while (true)
         {
-            case 0:
-                accel = 0;
-                break;
-            case 1:
-                accel = 1;
-                break;
-            case 2:
-                accel = -1;
-                break;
-        }
-        switch (actions.DiscreteActions[1])
-        {
-            case 0:
-                steer = Mathf.MoveTowards(steer, 0, 0.2f) ;
-                break;
-            case 1:
-                steer = Mathf.MoveTowards(steer, 1, 0.2f);
-                break;
-            case 2:
-                steer = Mathf.MoveTowards(steer, -1, 0.2f);
-                break;
+            yield return new WaitForSeconds(1);
+            Debug.Log(rb.velocity.z);
+
+            if (rb.velocity.z > 0.5f)
+            {
+                AddReward(rb.velocity.magnitude * 0.01f);
+            }
+
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Wall"))
+        if (other.CompareTag("Wall"))
         {
             Debug.Log("Wall = -1");
             AddReward(-1);
 
             EndEpisode();
-            
+
         }
- 
+
     }
 
     //private void OnTriggerStay(Collider other)
