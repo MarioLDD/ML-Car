@@ -34,7 +34,7 @@ public class AgentCar : Agent
             {
                 Debug.Log("Rb Velocity negativa!!");
                 
-                AddReward(-0.2f);
+                AddReward(-0.1f);
 
             }
         }
@@ -44,7 +44,7 @@ public class AgentCar : Agent
     public void TrackerCorrectCheck(object sender, EventArgs e)
     {
         Debug.Log("CorrectCheckpoint = 1");
-        AddReward(1);
+        AddReward(1f);
        
     }
 
@@ -119,17 +119,17 @@ public class AgentCar : Agent
  
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Checkpoints"))
-        {
-            Debug.Log("Wall = -0.1f");
-            AddReward(-0.1f);
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.CompareTag("Checkpoints"))
+    //    {
+    //        Debug.Log("Wall = -0.1f");
+    //        AddReward(-0.1f);
 
-        }
+    //    }
 
 
-    }
+    //}
 
 
 }
