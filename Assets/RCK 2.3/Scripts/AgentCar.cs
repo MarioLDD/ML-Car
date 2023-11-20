@@ -10,6 +10,7 @@ public class AgentCar : Agent
 {
     [SerializeField] TrackerPoint trackerPoint;
     [SerializeField] Transform spawnPos;
+    [SerializeField] Rigidbody rb;
 
     private float steer;
     private float accel;
@@ -20,6 +21,24 @@ public class AgentCar : Agent
     {
         trackerPoint.OnCorrectCheck += TrackerCorrectCheck;
         trackerPoint.OnIncorrectCheck += TrackerIncorrectCheck;
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        
+        if (rb != null)
+        {
+            if (rb.velocity.z < 0)
+            {
+                Debug.Log("Rb Velocity negativa!!");
+                
+                AddReward(-0.2f);
+
+            }
+        }
+
     }
 
     public void TrackerCorrectCheck(object sender, EventArgs e)
@@ -98,6 +117,18 @@ public class AgentCar : Agent
             
         }
  
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Checkpoints"))
+        {
+            Debug.Log("Wall = -0.1f");
+            AddReward(-0.1f);
+
+        }
+
+
     }
 
 

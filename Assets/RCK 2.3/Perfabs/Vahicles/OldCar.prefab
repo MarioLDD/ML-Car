@@ -5092,6 +5092,7 @@ MonoBehaviour:
   MaxStep: 0
   trackerPoint: {fileID: 0}
   spawnPos: {fileID: 0}
+  rb: {fileID: 5487112}
 --- !u!114 &11417596
 MonoBehaviour:
   m_ObjectHideFlags: 0
