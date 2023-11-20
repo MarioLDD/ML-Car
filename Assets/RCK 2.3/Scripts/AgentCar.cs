@@ -25,21 +25,21 @@ public class AgentCar : Agent
         Rigidbody rb = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
-    {
+    //private void FixedUpdate()
+    //{
         
-        if (rb != null)
-        {
-            if (rb.velocity.z < 0)
-            {
-                Debug.Log("Rb Velocity negativa!!");
+    //    if (rb != null)
+    //    {
+    //        if (rb.velocity.z < 0)
+    //        {
+    //            Debug.Log("Rb Velocity negativa!!");
                 
-                AddReward(-0.1f);
+    //            AddReward(-0.1f);
 
-            }
-        }
+    //        }
+    //    }
 
-    }
+    //}
 
     public void TrackerCorrectCheck(object sender, EventArgs e)
     {
