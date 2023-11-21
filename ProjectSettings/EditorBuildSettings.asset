@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/CarAgent 2.0.unity
+    guid: c8d814568b3592246833fb9e09288ecb
+  - enabled: 0
     path: Assets/Scenes/CarAgent.unity
     guid: 8313a6450b9d09d4a99a573852554941
   m_configObjects: {}
